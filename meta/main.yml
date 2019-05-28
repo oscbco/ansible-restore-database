@@ -1,7 +1,7 @@
 galaxy_info:
   author: Oscar Barrera
-  role_name: create-restore-database
-  description: Role for restoring a postgresql database
+  role_name: restore-database
+  description: Role for restoring data of a postgresql database
   license: license (MIT)
   min_ansible_version: 2.5
   platforms:
