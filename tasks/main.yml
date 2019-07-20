@@ -1,19 +1,20 @@
-- name: The same example as above, but using a symbolic mode equivalent to 0644
+- name: Copy file with db data to server
   copy:
     src: "{{ target_file }}"
-    dest: "{{ appdir }}"
+    dest: "{{ appdir }}/{{ target_file | basename }}"
     owner: "{{ userdba }}"
     group: "{{ userdba }}"
     mode: u=rw,g=,o=
 
-- name: Dump a single schema for an existing database
+- name: Restore db data
   postgresql_db:
     name: "{{ db }}"
     state: restore
-    target: "{{ appdir }}/{{ target_file }}"
+    target: "{{ appdir }}/{{ target_file | basename }}"
     login_host: "/var/run/postgresql"
-    login_unix_socket: "/var/run/postgresql/11-main.pid"
-    login_user: "{{ userdba }}"
+    login_user: postgres
   become: yes
-  become_user: "{{ userdba }}"
+  become_user: postgres
   become_method: sudo
+  register: var
+  failed_when: "var.stderr_lines | length > 0"
